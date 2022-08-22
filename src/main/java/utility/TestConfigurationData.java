@@ -1,7 +1,5 @@
 package utility;
 
-import java.util.HashMap;
-
 public class TestConfigurationData {
     public static final String BASE_URI = "https://api.trello.com";
 
