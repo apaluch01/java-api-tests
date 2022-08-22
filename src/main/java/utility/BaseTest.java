@@ -7,18 +7,22 @@ import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
+import static utility.TestConfigurationData.*;
+
 public abstract class BaseTest extends TestSteps{
-    protected static RequestSpecification requestSpec;
+
+    public static RequestSpecification requestSpec;
     protected static ResponseSpecification responseSpec;
+    public static RequestSpecBuilder builder;
 
     @BeforeSuite
-    public void setBaseURI() {
-/*
-        AllureLogger.logToAllure("The base URI is : "+readConfigurationFile("Base_URI"));
-        requestSpec = new RequestSpecBuilder().
-                setBaseUri(readConfigurationFile("Base_URI")).
-                build();*/
-
+    public static void setupRequestSpecBuilder()
+    {
+        builder = new RequestSpecBuilder();
+        builder.setBaseUri(BASE_URI);
+        builder.addQueryParam("key", KEY);
+        builder.addQueryParam("token", TOKEN);
+        requestSpec = builder.build();
     }
 
     @BeforeMethod
