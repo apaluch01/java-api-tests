@@ -20,6 +20,8 @@ public class BoardTests extends BaseTest {
                 queryParam("name", "test1").queryParam("key", KEY).queryParam("token", TOKEN).
                 contentType(ContentType.JSON).log().all().post("/1/boards/").
                 then().extract().path("id");
+
+        Assert.assertEquals(response.getStatusCode(), 200);
     }
 
     @Test (priority = 2)
@@ -28,7 +30,7 @@ public class BoardTests extends BaseTest {
         Response response = requestSpecification.when().get("/1/boards/" + id);
 
         System.out.println(response.then().extract().response().asString());
-        Assert.assertTrue(checkResponseIsValid(response));
+        Assert.assertEquals(response.getStatusCode(), 200);
     }
 
     @Test (priority = 2)
@@ -37,7 +39,7 @@ public class BoardTests extends BaseTest {
         Response response = requestSpecification.when().put("/1/boards/" + id);
 
         System.out.println(response.then().extract().response().asString());
-        Assert.assertTrue(checkResponseIsValid(response));
+        Assert.assertEquals(response.getStatusCode(), 200);
     }
 
     @Test (priority = 3)
@@ -45,6 +47,6 @@ public class BoardTests extends BaseTest {
         RequestSpecification requestSpecification = given().spec(requestSpec);
         Response response = requestSpecification.when().delete("/1/boards/" + id);
 
-        Assert.assertTrue(checkResponseIsValid(response));
+        Assert.assertEquals(response.getStatusCode(), 200);
     }
 }
