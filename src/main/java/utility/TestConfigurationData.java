@@ -2,7 +2,7 @@ package utility;
 
 import java.util.HashMap;
 
-public interface TestConfigurationData {
+public class TestConfigurationData {
     public static final String BASE_URI = "https://api.trello.com";
 
     public static final String KEY = "261478d38cec68e8e339c84b6096692d";
