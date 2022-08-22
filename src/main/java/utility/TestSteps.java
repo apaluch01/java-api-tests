@@ -1,6 +1,9 @@
 package utility;
 
+import io.restassured.response.Response;
+
 public class TestSteps {
+
     public void buildRequest() {
 
     }
@@ -9,19 +12,19 @@ public class TestSteps {
 
     }
 
-    public void checkResponseIsValid() {
-
+    public boolean checkResponseIsValid(Response response) {
+        return(response.getStatusCode() == 200);
     }
 
-    public void prepareActualResponse() {
-
+    public int prepareActualResponse(Response response) {
+        return(response.getStatusCode());
     }
 
-    public void prepareExpectedResponse() {
-
+    public int prepareExpectedResponse(int statusCode) {
+        return(statusCode);
     }
 
-    public void checkActualVsExpectedResponses() {
-
+    public boolean checkActualVsExpectedResponses(Response response, int statusCode) {
+        return(prepareActualResponse(response) == prepareExpectedResponse(statusCode));
     }
 }
