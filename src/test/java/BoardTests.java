@@ -1,16 +1,10 @@
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.http.Method;
 import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import utility.BaseTest;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.requestSpecification;
-import static utility.BaseTest.requestSpec;
 import static utility.TestConfigurationData.*;
 
 public class BoardTests extends BaseTest {
