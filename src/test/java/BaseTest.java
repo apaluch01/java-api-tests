@@ -10,12 +10,11 @@ import static utility.TestConfigurationData.*;
 
 public abstract class BaseTest extends TestSteps {
 
-    public static RequestSpecification requestSpec;
-    protected static ResponseSpecification responseSpec;
+    protected RequestSpecification requestSpec;
     public static RequestSpecBuilder builder;
 
     @BeforeSuite
-    public static void setupRequestSpecBuilder()
+    public void setupRequestSpecBuilder()
     {
         builder = new RequestSpecBuilder();
         builder.setBaseUri(BASE_URI);
