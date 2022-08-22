@@ -1,4 +1,4 @@
-package pojoClasses;
+package models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
