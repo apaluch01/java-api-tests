@@ -1,3 +1,5 @@
+package pojoClasses;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BoardInfo {
