@@ -1,37 +1,44 @@
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utility.BaseTest;
 
 import static io.restassured.RestAssured.given;
 import static utility.BaseTest.requestSpec;
 import static utility.TestConfigurationData.*;
 
-public class BoardTests {
+public class BoardTests extends BaseTest {
 
     @Test
-    void createBoard() {
-        ValidatableResponse response = given().
-                baseUri("https://api.trello.com").
-                queryParams("name", "test", "key", "261478d38cec68e8e339c84b6096692d", "token", "10f8cec355295b29a25d24b2ae6a82b0fdda92c603bab4b2edda2fca4e88f4ed").
-                when().
-                post("/1/boards/").
-                then().
-                assertThat().
-                statusCode(415);
+    String shouldCreateBoard() {
+        RequestSpecification requestSpecification = given().baseUri(BASE_URI).
+                queryParam("name", "test1").queryParam("key", KEY).queryParam("token", TOKEN);
+        Response response1 = requestSpecification.when().post("/1/boards/");
 
+        String id = given().baseUri(BASE_URI).
+                queryParam("name", "test1").queryParam("key", KEY).queryParam("token", TOKEN).
+                contentType(ContentType.JSON).log().all().post("/1/boards/").
+                then().extract().path("id");
+        System.out.print(id);
+        //System.out.println(response1.then().extract().response().asString());
+        //Assert.assertEquals(response1.statusCode(), 200);
+        return id;
     }
+
+    String id = shouldCreateBoard();
 
     @Test
     void shouldGetBoardById() {
         RequestSpecification requestSpecification = given().baseUri(BASE_URI).
-                queryParams("key", KEY, "token", TOKEN);
-        Response response = requestSpecification.when().get("/1/boards/630336c58f72ce00e9bd2b04");
+                queryParam("key", KEY).queryParam("token", TOKEN);
+        Response responseGet = requestSpecification.when().get("/1/boards/"+id);
 
-        System.out.println(response.then().extract().response().asString());
-        Assert.assertEquals(response.statusCode(), 200);
+        System.out.println(responseGet.then().extract().response().asString());
+        Assert.assertEquals(responseGet.statusCode(), 200);
     }
 }
