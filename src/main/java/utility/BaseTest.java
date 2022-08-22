@@ -24,10 +24,4 @@ public abstract class BaseTest extends TestSteps{
         builder.addQueryParam("token", TOKEN);
         requestSpec = builder.build();
     }
-
-    @BeforeMethod
-    public void beforeMethod() {
-        responseSpec = new ResponseSpecBuilder().expectStatusCode(200).build();
-    }
-
 }
