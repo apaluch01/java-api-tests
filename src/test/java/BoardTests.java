@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import utility.BaseTest;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.requestSpecification;
 import static utility.BaseTest.requestSpec;
 import static utility.TestConfigurationData.*;
 
@@ -17,8 +18,8 @@ public class BoardTests extends BaseTest {
     String id = "";
     @Test (priority = 1)
     void shouldCreateBoard() {
-        RequestSpecification requestSpecification = given().baseUri(BASE_URI).
-                queryParam("name", "test1").queryParam("key", KEY).queryParam("token", TOKEN);
+        RequestSpecification requestSpecification = given().spec(requestSpec);
+
         Response responsePost = requestSpecification.when().post("/1/boards/");
 
         id = given().baseUri(BASE_URI).
@@ -31,8 +32,7 @@ public class BoardTests extends BaseTest {
 
     @Test (priority = 2)
     void shouldGetBoardById() {
-        RequestSpecification requestSpecification = given().baseUri(BASE_URI).
-                queryParam("key", KEY).queryParam("token", TOKEN);
+        RequestSpecification requestSpecification = given().spec(requestSpec);
         Response responseGet = requestSpecification.when().get("/1/boards/" + id);
 
         System.out.println(responseGet.then().extract().response().asString());
@@ -41,8 +41,7 @@ public class BoardTests extends BaseTest {
 
     @Test (priority = 2)
     void shouldUpdateBoardById() {
-        RequestSpecification requestSpecification = given().baseUri(BASE_URI).
-                queryParam("key", KEY).queryParam("token", TOKEN);
+        RequestSpecification requestSpecification = given().spec(requestSpec);
         Response responseGet = requestSpecification.when().put("/1/boards/" + id);
 
         System.out.println(responseGet.then().extract().response().asString());
@@ -51,8 +50,7 @@ public class BoardTests extends BaseTest {
 
     @Test (priority = 3)
     void shouldDeleteBoardById() {
-        RequestSpecification requestSpecification = given().baseUri(BASE_URI).
-                queryParam("key", KEY).queryParam("token", TOKEN);
+        RequestSpecification requestSpecification = given().spec(requestSpec);
         Response responseGet = requestSpecification.when().delete("/1/boards/" + id);
 
         Assert.assertEquals(responseGet.statusCode(), 200);
