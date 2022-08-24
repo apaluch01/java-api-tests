@@ -17,7 +17,7 @@ public class BoardTests extends BaseTest {
         Response response = requestSpecification.queryParam("name", "TEST").contentType(ContentType.JSON).
                 when().post("/1/boards/");
 
-        id = given().baseUri(BASE_URI).
+        id = given().
                 queryParam("name", "test1").spec(requestSpec).
                 contentType(ContentType.JSON).log().all().post("/1/boards/").
                 then().extract().path("id");
