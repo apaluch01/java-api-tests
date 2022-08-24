@@ -36,4 +36,4 @@ out/
 *.iws
 
 ## Project data
-/config.txt
+/src/main/java/utility/config.txt
