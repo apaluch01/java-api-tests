@@ -34,3 +34,6 @@ out/
 *.iml
 *.ipr
 *.iws
+
+## Project data
+/config.txt
