@@ -14,10 +14,11 @@ public class BoardTests extends BaseTest {
     void shouldCreateBoard() {
         RequestSpecification requestSpecification = given().spec(requestSpec);
 
-        Response response = requestSpecification.when().post("/1/boards/");
+        Response response = requestSpecification.queryParam("name", "TEST").contentType(ContentType.JSON).
+                when().post("/1/boards/");
 
         id = given().baseUri(BASE_URI).
-                queryParam("name", "test1").queryParam("key", KEY).queryParam("token", TOKEN).
+                queryParam("name", "test1").spec(requestSpec).
                 contentType(ContentType.JSON).log().all().post("/1/boards/").
                 then().extract().path("id");
 
