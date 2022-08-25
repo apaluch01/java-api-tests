@@ -58,5 +58,6 @@ public class BoardTests extends BaseTest {
         Response response = requestSpecification.when().delete("/1/boards/" + ids.get(0));
 
         Assert.assertEquals(response.getStatusCode(), 200);
+        Assert.assertEquals(requestSpecification.when().get("/1/boards/" + ids.get(0)).getStatusCode(), 404);
     }
 }
