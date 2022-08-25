@@ -2,9 +2,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
 import utility.TestSteps;
 
 import java.io.BufferedReader;
@@ -42,5 +40,9 @@ public abstract class BaseTest extends TestSteps {
                 when().post("/1/boards/");
 
         return(response.then().extract().path("id"));
+    }
+
+    void deleteBoard(String id) {
+        given().spec(requestSpec).when().delete("/1/boards/" + id);
     }
 }
