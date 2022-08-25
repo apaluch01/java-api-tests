@@ -15,7 +15,8 @@ public class BoardTests extends BaseTest {
 
     StringBuilder id = new StringBuilder();
     @AfterSuite
-    void cleanUpIds(){
+    void cleanUp(){
+        ids.forEach(id -> deleteBoard(id));
         ids.clear();
     }
 
@@ -23,13 +24,14 @@ public class BoardTests extends BaseTest {
     void shouldCreateBoard() {
         RequestSpecification requestSpecification = given().spec(requestSpec);
 
-        Response response = requestSpecification.queryParam("name", "TEST").
+        Response response = requestSpecification.queryParam("name", "post").
                 contentType(ContentType.JSON).
                 when().post("/1/boards/");
 
         ids.add(response.then().extract().path("id"));
 
         Assert.assertEquals(response.getStatusCode(), 200);
+        Assert.assertEquals(response.then().extract().path("name"), "post");
     }
 
     @Test (priority = 2)
@@ -42,8 +44,7 @@ public class BoardTests extends BaseTest {
 
         LOGGER.info(response.then().extract().response().asString());
         Assert.assertEquals(response.getStatusCode(), 200);
-
-        id.setLength(0);
+        Assert.assertEquals(response.then().extract().path("name"), "get");
     }
 
     @Test (priority = 2)
@@ -56,21 +57,17 @@ public class BoardTests extends BaseTest {
 
         LOGGER.info(response.then().extract().response().asString());
         Assert.assertEquals(response.getStatusCode(), 200);
-
-        id.setLength(0);
+        Assert.assertEquals(response.then().extract().path("name"), "put");
     }
 
     @Test (priority = 3)
     void shouldDeleteBoardById() {
         id = new StringBuilder(createBoard("delete"));
-        ids.add(id.toString());
 
         RequestSpecification requestSpecification = given().spec(requestSpec);
         Response response = requestSpecification.when().delete("/1/boards/" + id);
 
         Assert.assertEquals(response.getStatusCode(), 200);
         Assert.assertEquals(requestSpecification.when().get("/1/boards/" + id).getStatusCode(), 404);
-
-        id.setLength(0);
     }
 }
