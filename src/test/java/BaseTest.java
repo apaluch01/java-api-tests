@@ -2,6 +2,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.apache.http.client.methods.HttpPost;
 import org.testng.annotations.BeforeSuite;
 import utility.TestSteps;
 
@@ -18,8 +19,7 @@ public abstract class BaseTest extends TestSteps {
     public static RequestSpecBuilder builder;
 
     @BeforeSuite
-    public void setupRequestSpecBuilder()
-    {
+    public void setupRequestSpecBuilder() {
         builder = new RequestSpecBuilder();
         try (FileReader file = new FileReader(CONFIG_DATA_FILE_PATH);
              BufferedReader reader = new BufferedReader(file)) {
@@ -30,6 +30,21 @@ public abstract class BaseTest extends TestSteps {
             System.out.println(e);
         }
         requestSpec = builder.build();
+    }
+
+    HttpPost setupHttpPost(String name) {
+        HttpPost post = null;
+
+        try (FileReader file = new FileReader(CONFIG_DATA_FILE_PATH);
+             BufferedReader reader = new BufferedReader(file)) {
+            post = new HttpPost(reader.readLine() + "/1/boards/?name=" + name +
+                    "&key=" + reader.readLine() +
+                    "&token=" + reader.readLine());
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+        return post;
     }
 
     public String createBoard(String name) {
