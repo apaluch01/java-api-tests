@@ -1,12 +1,14 @@
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import okhttp3.Call;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
@@ -17,8 +19,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
 
@@ -36,12 +36,23 @@ public class BoardTests extends BaseTest {
     @Test
     void apacheShouldCreateBoard() throws IOException {
         HttpClient client = HttpClientBuilder.create().build();
-        HttpResponse response = client.execute(setupHttpPost("post"));
+        HttpResponse response = client.execute(setupHttpPost("postApache"));
 
         Assert.assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
 
         HttpEntity entity = response.getEntity();
-        ids.add(findId(entity));
+        ids.add(findId(EntityUtils.toString(entity)));
+    }
+
+    @Test
+    void okHttpShouldCreateBoard() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        Call call = client.newCall(setupOkHttp("postOkHttp"));
+        okhttp3.Response response = call.execute();
+
+        Assert.assertEquals(response.code(), 200);
+        ids.add(findId(response.body().string()));
     }
 
     @Test
