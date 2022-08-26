@@ -21,48 +21,42 @@ import static utility.TestConfigurationData.*;
 public abstract class BaseTest extends TestSteps {
 
     protected RequestSpecification requestSpec;
-    public static RequestSpecBuilder builder;
-
+    protected RequestSpecBuilder builder;
+    protected String baseUrl;
+    protected String key;
+    protected String token;
     @BeforeSuite
-    public void setupRequestSpecBuilder() {
-        builder = new RequestSpecBuilder();
+    void getConfigData() {
         try (FileReader file = new FileReader(CONFIG_DATA_FILE_PATH);
              BufferedReader reader = new BufferedReader(file)) {
-            builder.setBaseUri(reader.readLine());
-            builder.addQueryParam("key", reader.readLine());
-            builder.addQueryParam("token", reader.readLine());
+            baseUrl = reader.readLine();
+            key = reader.readLine();
+            token = reader.readLine();
         } catch (IOException e) {
             System.out.println(e);
         }
+    }
+    @BeforeSuite
+    public void setupRequestSpecBuilder() {
+        builder = new RequestSpecBuilder();
+
+        builder.setBaseUri(baseUrl);
+        builder.addQueryParam("key", key);
+        builder.addQueryParam("token", token);
+
         requestSpec = builder.build();
     }
 
     HttpPost setupHttpPost(String name) {
-        HttpPost post = null;
-
-        try (FileReader file = new FileReader(CONFIG_DATA_FILE_PATH);
-             BufferedReader reader = new BufferedReader(file)) {
-            post = new HttpPost(reader.readLine() + "/1/boards/?name=" + name +
-                    "&key=" + reader.readLine() +
-                    "&token=" + reader.readLine());
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        HttpPost post = new HttpPost(baseUrl + "/1/boards/?name=" + name + "&key=" + key + "&token=" + token);
 
         return post;
     }
 
     Request setupOkHttp(String name) {
-        HttpUrl.Builder urlBuilder = null;
-
-        try (FileReader file = new FileReader(CONFIG_DATA_FILE_PATH);
-             BufferedReader reader = new BufferedReader(file)) {
-            urlBuilder = HttpUrl.parse(reader.readLine() + "/1/boards/?name=" + name).newBuilder();
-            urlBuilder.addQueryParameter("key", reader.readLine()).
-                    addQueryParameter("token", reader.readLine());
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(baseUrl + "/1/boards/?name=" + name).newBuilder();
+        urlBuilder.addQueryParameter("key", key).
+                addQueryParameter("token", token);
 
         String url = urlBuilder.build().toString();
         RequestBody reqBody = RequestBody.create(null, new byte[0]);
