@@ -12,6 +12,8 @@ import utility.TestSteps;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.function.Supplier;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +21,7 @@ import static io.restassured.RestAssured.given;
 import static utility.TestConfigurationData.*;
 
 public abstract class BaseTest extends TestSteps {
-
+    private static final Logger LOGGER = Logger.getLogger(String.valueOf(BaseTest.class));
     protected RequestSpecification requestSpec;
     protected RequestSpecBuilder builder;
     protected String baseUrl;
@@ -33,7 +35,7 @@ public abstract class BaseTest extends TestSteps {
             key = reader.readLine();
             token = reader.readLine();
         } catch (IOException e) {
-            System.out.println(e);
+            LOGGER.info((Supplier<String>) e);
         }
     }
     @BeforeSuite
