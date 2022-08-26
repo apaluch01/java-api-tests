@@ -1,12 +1,25 @@
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static io.restassured.RestAssured.given;
 
 public class BoardTests extends BaseTest {
@@ -18,6 +31,17 @@ public class BoardTests extends BaseTest {
     void cleanUp(){
         ids.forEach(id -> deleteBoard(id));
         ids.clear();
+    }
+
+    @Test
+    void apacheShouldCreateBoard() throws IOException {
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpResponse response = client.execute(setupHttpPost("post"));
+
+        Assert.assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
+
+        HttpEntity entity = response.getEntity();
+        ids.add(findId(entity));
     }
 
     @Test (priority = 1)
