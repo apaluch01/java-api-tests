@@ -2,10 +2,14 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.EntityUtils;
 import org.testng.annotations.BeforeSuite;
+import retrofit2.http.POST;
 import utility.TestSteps;
 
 import java.io.BufferedReader;
@@ -51,8 +55,29 @@ public abstract class BaseTest extends TestSteps {
         return post;
     }
 
-    String findId(HttpEntity entity) throws IOException {
-        String body = EntityUtils.toString(entity);
+    Request setupOkHttp(String name) {
+        HttpUrl.Builder urlBuilder = null;
+
+        try (FileReader file = new FileReader(CONFIG_DATA_FILE_PATH);
+             BufferedReader reader = new BufferedReader(file)) {
+            urlBuilder = HttpUrl.parse(reader.readLine() + "/1/boards/?name=" + name).newBuilder();
+            urlBuilder.addQueryParameter("key", reader.readLine()).
+                    addQueryParameter("token", reader.readLine());
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+        String url = urlBuilder.build().toString();
+        RequestBody reqBody = RequestBody.create(null, new byte[0]);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .method("POST", reqBody)
+                .build();
+
+        return request;
+    }
+    String findId(String body) throws IOException {
 
         Pattern pattern = Pattern.compile("(\"id\":\")([0-9a-z]+)");
         Matcher matcher = pattern.matcher(body);
