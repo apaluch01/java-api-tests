@@ -73,7 +73,7 @@ public class BoardTests extends BaseTest {
 
     @Test
     void shouldGetBoardById() {
-        id = new StringBuilder(createBoard("get"));
+        id = new StringBuilder(createBoardAndReturnId("get"));
         ids.add(id.toString());
 
         RequestSpecification requestSpecification = given().spec(requestSpec);
@@ -86,7 +86,7 @@ public class BoardTests extends BaseTest {
 
     @Test
     void shouldUpdateBoardById() {
-        id = new StringBuilder(createBoard("put"));
+        id = new StringBuilder(createBoardAndReturnId("put"));
         ids.add(id.toString());
 
         RequestSpecification requestSpecification = given().spec(requestSpec);
@@ -99,7 +99,7 @@ public class BoardTests extends BaseTest {
 
     @Test
     void shouldDeleteBoardById() {
-        id = new StringBuilder(createBoard("delete"));
+        id = new StringBuilder(createBoardAndReturnId("delete"));
 
         RequestSpecification requestSpecification = given().spec(requestSpec);
         Response response = requestSpecification.when().delete("/1/boards/" + id);

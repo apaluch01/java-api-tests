@@ -75,7 +75,7 @@ public abstract class BaseTest extends TestSteps {
         return request;
     }
 
-    String getId(String body) throws IOException {
+    String getId(String body) {
 
         Pattern pattern = Pattern.compile("(\"id\":\")([0-9a-z]+)");
         Matcher matcher = pattern.matcher(body);
@@ -84,7 +84,7 @@ public abstract class BaseTest extends TestSteps {
         return (matcher.group(2));
     }
 
-    String getName(String body) throws IOException {
+    String getName(String body) {
         Pattern pattern = Pattern.compile("(\"name\":\")([^\"]+)");
         Matcher matcher = pattern.matcher(body);
 
@@ -92,7 +92,7 @@ public abstract class BaseTest extends TestSteps {
         return (matcher.group(2));
     }
 
-    public String createBoard(String name) {
+    public String createBoardAndReturnId(String name) {
         RequestSpecification requestSpecification = given().spec(requestSpec);
 
         Response response = requestSpecification.queryParam("name", name).
