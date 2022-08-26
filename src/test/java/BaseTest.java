@@ -74,7 +74,8 @@ public abstract class BaseTest extends TestSteps {
 
         return request;
     }
-    String findId(String body) throws IOException {
+
+    String getId(String body) throws IOException {
 
         Pattern pattern = Pattern.compile("(\"id\":\")([0-9a-z]+)");
         Matcher matcher = pattern.matcher(body);
@@ -83,7 +84,7 @@ public abstract class BaseTest extends TestSteps {
         return (matcher.group(2));
     }
 
-    String findName(String body) throws IOException {
+    String getName(String body) throws IOException {
         Pattern pattern = Pattern.compile("(\"name\":\")([^\"]+)");
         Matcher matcher = pattern.matcher(body);
 

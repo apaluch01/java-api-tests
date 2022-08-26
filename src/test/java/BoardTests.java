@@ -40,8 +40,8 @@ public class BoardTests extends BaseTest {
         String body = EntityUtils.toString(entity);
 
         Assert.assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
-        Assert.assertEquals(findName(body), "postApache");
-        ids.add(findId(body));
+        Assert.assertEquals(getName(body), "postApache");
+        ids.add(getId(body));
     }
 
     @Test
@@ -53,8 +53,8 @@ public class BoardTests extends BaseTest {
 
         String body = response.body().string();
         Assert.assertEquals(response.code(), 200);
-        Assert.assertEquals(findName(body), "postOkHttp");
-        ids.add(findId(body));
+        Assert.assertEquals(getName(body), "postOkHttp");
+        ids.add(getId(body));
     }
 
     @Test
