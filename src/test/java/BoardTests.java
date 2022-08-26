@@ -38,10 +38,12 @@ public class BoardTests extends BaseTest {
         HttpClient client = HttpClientBuilder.create().build();
         HttpResponse response = client.execute(setupHttpPost("postApache"));
 
-        Assert.assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
-
         HttpEntity entity = response.getEntity();
-        ids.add(findId(EntityUtils.toString(entity)));
+        String body = EntityUtils.toString(entity);
+
+        Assert.assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
+        Assert.assertEquals(findName(body), "postApache");
+        ids.add(findId(body));
     }
 
     @Test
@@ -51,8 +53,10 @@ public class BoardTests extends BaseTest {
         Call call = client.newCall(setupOkHttp("postOkHttp"));
         okhttp3.Response response = call.execute();
 
+        String body = response.body().string();
         Assert.assertEquals(response.code(), 200);
-        ids.add(findId(response.body().string()));
+        Assert.assertEquals(findName(body), "postOkHttp");
+        ids.add(findId(body));
     }
 
     @Test
