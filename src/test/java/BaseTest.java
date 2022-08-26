@@ -2,13 +2,17 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.util.EntityUtils;
 import org.testng.annotations.BeforeSuite;
 import utility.TestSteps;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
 import static utility.TestConfigurationData.*;
@@ -45,6 +49,16 @@ public abstract class BaseTest extends TestSteps {
         }
 
         return post;
+    }
+
+    String findId(HttpEntity entity) throws IOException {
+        String body = EntityUtils.toString(entity);
+
+        Pattern pattern = Pattern.compile("(\"id\":\")([0-9a-z]+)");
+        Matcher matcher = pattern.matcher(body);
+
+        matcher.find();
+        return (matcher.group(2));
     }
 
     public String createBoard(String name) {
