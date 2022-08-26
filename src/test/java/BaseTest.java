@@ -5,11 +5,8 @@ import io.restassured.specification.RequestSpecification;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.util.EntityUtils;
 import org.testng.annotations.BeforeSuite;
-import retrofit2.http.POST;
 import utility.TestSteps;
 
 import java.io.BufferedReader;
