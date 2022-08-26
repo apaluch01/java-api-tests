@@ -44,7 +44,7 @@ public class BoardTests extends BaseTest {
         ids.add(findId(entity));
     }
 
-    @Test (priority = 1)
+    @Test
     void shouldCreateBoard() {
         RequestSpecification requestSpecification = given().spec(requestSpec);
 
@@ -58,7 +58,7 @@ public class BoardTests extends BaseTest {
         Assert.assertEquals(response.then().extract().path("name"), "post");
     }
 
-    @Test (priority = 2)
+    @Test
     void shouldGetBoardById() {
         id = new StringBuilder(createBoard("get"));
         ids.add(id.toString());
@@ -71,7 +71,7 @@ public class BoardTests extends BaseTest {
         Assert.assertEquals(response.then().extract().path("name"), "get");
     }
 
-    @Test (priority = 2)
+    @Test
     void shouldUpdateBoardById() {
         id = new StringBuilder(createBoard("put"));
         ids.add(id.toString());
@@ -84,7 +84,7 @@ public class BoardTests extends BaseTest {
         Assert.assertEquals(response.then().extract().path("name"), "put");
     }
 
-    @Test (priority = 3)
+    @Test
     void shouldDeleteBoardById() {
         id = new StringBuilder(createBoard("delete"));
 
