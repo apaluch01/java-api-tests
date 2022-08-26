@@ -22,9 +22,10 @@ import static io.restassured.RestAssured.given;
 
 public class BoardTests extends BaseTest {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(BoardTests.class));
-    public static final List<String> ids = new ArrayList();
 
+    public static final List<String> ids = new ArrayList();
     StringBuilder id = new StringBuilder();
+    
     @AfterSuite
     void cleanUp(){
         ids.forEach(id -> deleteBoard(id));
