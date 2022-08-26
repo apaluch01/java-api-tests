@@ -86,6 +86,14 @@ public abstract class BaseTest extends TestSteps {
         return (matcher.group(2));
     }
 
+    String findName(String body) throws IOException {
+        Pattern pattern = Pattern.compile("(\"name\":\")([^\"]+)");
+        Matcher matcher = pattern.matcher(body);
+
+        matcher.find();
+        return (matcher.group(2));
+    }
+
     public String createBoard(String name) {
         RequestSpecification requestSpecification = given().spec(requestSpec);
 
