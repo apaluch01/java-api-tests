@@ -7,7 +7,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import org.apache.http.client.methods.HttpPost;
 import org.testng.annotations.BeforeSuite;
-import utility.TestSteps;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -20,7 +19,7 @@ import java.util.regex.Pattern;
 import static io.restassured.RestAssured.given;
 import static utility.TestConfigurationData.*;
 
-public abstract class BaseTest extends TestSteps {
+public abstract class BaseTest {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(BaseTest.class));
     protected RequestSpecification requestSpec;
     protected RequestSpecBuilder builder;
