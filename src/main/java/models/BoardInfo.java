@@ -12,7 +12,7 @@ public class BoardInfo {
 /* ObjectMapper om = new ObjectMapper();
 Root root = om.readValue(myJsonString, Root.class); */
     @Getter @Setter
-    public class LabelNames{
+    public static class LabelNames{
         @JsonProperty
         public String green;
         @JsonProperty
@@ -76,11 +76,11 @@ Root root = om.readValue(myJsonString, Root.class); */
     }
 
     @Getter @Setter
-    public class Limits{
+    public static class Limits{
     }
 
     @Getter @Setter
-    public class Prefs{
+    public static class Prefs{
         @JsonProperty
         public String permissionLevel;
         @JsonProperty
@@ -134,7 +134,7 @@ Root root = om.readValue(myJsonString, Root.class); */
     }
 
     @Getter @Setter
-    public class Root{
+    public static class Root{
         @JsonProperty
         public String id;
         @JsonProperty
@@ -164,7 +164,7 @@ Root root = om.readValue(myJsonString, Root.class); */
     }
 
     @Getter @Setter
-    public class SwitcherView{
+    public static class SwitcherView{
         @JsonProperty
         public String _id;
         @JsonProperty

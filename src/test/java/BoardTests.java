@@ -1,6 +1,8 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import models.BoardInfo;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import org.apache.http.HttpEntity;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static io.restassured.RestAssured.form;
 import static io.restassured.RestAssured.given;
 
 public class BoardTests extends BaseTest {
@@ -25,7 +28,7 @@ public class BoardTests extends BaseTest {
 
     public static final List<String> ids = new ArrayList();
     StringBuilder id = new StringBuilder();
-    
+
     @AfterSuite
     void cleanUp(){
         ids.forEach(id -> deleteBoard(id));
@@ -73,16 +76,16 @@ public class BoardTests extends BaseTest {
     }
 
     @Test
-    void shouldGetBoardById() {
+    void shouldGetBoardById() throws JsonProcessingException {
         id = new StringBuilder(createBoardAndReturnId("get"));
         ids.add(id.toString());
 
         RequestSpecification requestSpecification = given().spec(requestSpec);
         Response response = requestSpecification.when().get("/1/boards/" + id);
 
-        LOGGER.info(response.then().extract().response().asString());
         Assert.assertEquals(response.getStatusCode(), 200);
         Assert.assertEquals(response.then().extract().path("name"), "get");
+        deserialize(response.then().extract().response().asString());
     }
 
     @Test

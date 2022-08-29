@@ -1,7 +1,10 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import models.BoardInfo;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -22,7 +25,6 @@ import static utility.TestConfigurationData.*;
 public abstract class BaseTest {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(BaseTest.class));
     protected RequestSpecification requestSpec;
-    protected RequestSpecBuilder builder;
     protected String baseUrl;
     protected String key;
     protected String token;
@@ -39,7 +41,7 @@ public abstract class BaseTest {
     }
     @BeforeSuite
     public void setupRequestSpecBuilder() {
-        builder = new RequestSpecBuilder();
+        RequestSpecBuilder builder = new RequestSpecBuilder();
 
         builder.setBaseUri(baseUrl);
         builder.addQueryParam("key", key);
@@ -97,6 +99,12 @@ public abstract class BaseTest {
         return(response.then().extract().path("id"));
     }
 
+    void deserialize(String body) throws JsonProcessingException {
+        ObjectMapper om = new ObjectMapper();
+        BoardInfo.Root root = om.readValue(body, BoardInfo.Root.class);
+
+        System.out.println(root.getShortUrl());
+    }
     void deleteBoard(String id) {
         given().spec(requestSpec).when().delete("/1/boards/" + id);
     }
