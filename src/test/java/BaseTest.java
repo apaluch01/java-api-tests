@@ -10,6 +10,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import org.apache.http.client.methods.HttpPost;
 import org.testng.annotations.BeforeSuite;
+import retrofit2.Retrofit;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -25,7 +26,7 @@ import static utility.TestConfigurationData.*;
 public abstract class BaseTest {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(BaseTest.class));
     protected RequestSpecification requestSpec;
-    protected String baseUrl;
+    protected static String baseUrl;
     protected String key;
     protected String token;
     @BeforeSuite
@@ -72,6 +73,14 @@ public abstract class BaseTest {
         return request;
     }
 
+    Retrofit setupRetrofit(String name) {
+        Retrofit retrofit = new retrofit2.Retrofit.Builder()
+                        .baseUrl(baseUrl + "/1/boards/?name=" + name)
+                        .build();
+
+        return retrofit;
+    }
+
     String getId(String body) {
 
         Pattern pattern = Pattern.compile("(\"id\":\")([0-9a-z]+)");
@@ -108,6 +117,7 @@ public abstract class BaseTest {
 
         return (matcher.matches());
     }
+
     void deleteBoard(String id) {
         given().spec(requestSpec).when().delete("/1/boards/" + id);
     }
