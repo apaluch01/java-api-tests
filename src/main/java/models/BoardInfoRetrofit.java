@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
-public class BoardInfo {
+public interface BoardInfoRetrofit {
     @Getter @Setter
     public static class LabelNames{
         @JsonProperty
