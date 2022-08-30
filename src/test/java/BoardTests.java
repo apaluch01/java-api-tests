@@ -85,7 +85,7 @@ public class BoardTests extends BaseTest {
 
         Assert.assertEquals(response.getStatusCode(), 200);
         Assert.assertEquals(response.then().extract().path("name"), "get");
-        deserialize(response.then().extract().response().asString());
+        Assert.assertTrue(checkIfShortUrlMatches(response.then().extract().response().asString()));
     }
 
     @Test

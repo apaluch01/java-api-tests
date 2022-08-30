@@ -99,11 +99,14 @@ public abstract class BaseTest {
         return(response.then().extract().path("id"));
     }
 
-    void deserialize(String body) throws JsonProcessingException {
+    boolean checkIfShortUrlMatches(String body) throws JsonProcessingException {
         ObjectMapper om = new ObjectMapper();
         BoardInfo.Root root = om.readValue(body, BoardInfo.Root.class);
 
-        System.out.println(root.getShortUrl());
+        Pattern pattern = Pattern.compile("(https://trello\\.com/b/)(\\w{8})");
+        Matcher matcher = pattern.matcher(root.getShortUrl());
+
+        return (matcher.matches());
     }
     void deleteBoard(String id) {
         given().spec(requestSpec).when().delete("/1/boards/" + id);
