@@ -2,7 +2,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import models.BoardInfo;
+import models.BoardInfoRetrofit;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import org.apache.http.HttpEntity;
@@ -14,13 +14,13 @@ import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
+import retrofit2.Retrofit;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static io.restassured.RestAssured.form;
 import static io.restassured.RestAssured.given;
 
 public class BoardTests extends BaseTest {
@@ -49,7 +49,7 @@ public class BoardTests extends BaseTest {
     }
 
     @Test
-    void okHttpShouldCreateBoard() throws IOException {
+    void okHttpShouldCreateBoard() throws IOException  {
         OkHttpClient client = new OkHttpClient();
 
         Call call = client.newCall(setupOkHttp("postOkHttp"));
@@ -59,6 +59,13 @@ public class BoardTests extends BaseTest {
         Assert.assertEquals(response.code(), 200);
         Assert.assertEquals(getName(body), "postOkHttp");
         ids.add(getId(body));
+    }
+
+    @Test
+    void retrofitShouldCreateBoard() {
+        Retrofit retrofit = setupRetrofit("postRetrofit");
+
+        BoardInfoRetrofit response = retrofit.create(BoardInfoRetrofit.class);
     }
 
     @Test
@@ -89,7 +96,7 @@ public class BoardTests extends BaseTest {
     }
 
     @Test
-    void shouldUpdateBoardById() {
+    void shouldUpdateBoardById() throws JsonProcessingException {
         id = new StringBuilder(createBoardAndReturnId("put"));
         ids.add(id.toString());
 
@@ -99,6 +106,7 @@ public class BoardTests extends BaseTest {
         LOGGER.info(response.then().extract().response().asString());
         Assert.assertEquals(response.getStatusCode(), 200);
         Assert.assertEquals(response.then().extract().path("name"), "put");
+        Assert.assertTrue(checkIfShortUrlMatches(response.then().extract().response().asString()));
     }
 
     @Test
