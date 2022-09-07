@@ -6,15 +6,19 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
+@Getter @Setter
 public class BoardInfo {
-    @JsonProperty("LabelNames")
-    LabelNames labelNames;
-    @JsonProperty("Limits")
-    Limits limits;
-    @JsonProperty("Prefs")
+    public String id;
+    public String name;
+    public String desc;
+    public Object descData;
+    public boolean closed;
+    public String idOrganization;
+    public Object idEnterprise;
+    public boolean pinned;
+    public String url;
+    public String shortUrl;
     Prefs prefs;
-    @JsonProperty("Root")
-    Root root;
-    @JsonProperty("SwitcherView")
-    SwitcherView switcherView;
+    LabelNames labelNames;
+    Limits limits;
 }
