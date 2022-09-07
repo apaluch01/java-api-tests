@@ -5,6 +5,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import models.BoardInfo;
+import models.Root;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -29,6 +30,7 @@ public abstract class BaseTest {
     protected static String baseUrl;
     protected String key;
     protected String token;
+
     @BeforeSuite
     void getConfigData() {
         try (FileReader file = new FileReader(CONFIG_DATA_FILE_PATH);
@@ -40,6 +42,7 @@ public abstract class BaseTest {
             LOGGER.info((Supplier<String>) e);
         }
     }
+
     @BeforeSuite
     public void setupRequestSpecBuilder() {
         RequestSpecBuilder builder = new RequestSpecBuilder();
@@ -110,7 +113,7 @@ public abstract class BaseTest {
 
     boolean checkIfShortUrlMatches(String body) throws JsonProcessingException {
         ObjectMapper om = new ObjectMapper();
-        BoardInfo.Root root = om.readValue(body, BoardInfo.Root.class);
+        Root root = om.readValue(body, Root.class);
 
         Pattern pattern = Pattern.compile("(https://trello\\.com/b/)(\\w{8})");
         Matcher matcher = pattern.matcher(root.getShortUrl());
