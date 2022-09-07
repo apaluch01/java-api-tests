@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
+import clients.BaseConfig;
 
 public class BoardTests extends BaseTest {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(BoardTests.class));
@@ -37,7 +38,7 @@ public class BoardTests extends BaseTest {
     @Test
     void apacheShouldCreateBoard() throws IOException {
         HttpClient client = HttpClientBuilder.create().build();
-        HttpResponse response = client.execute(setupHttpPost("postApache"));
+        HttpResponse response = client.execute(BaseConfig.setupHttpPost("postApache"));
 
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity);
@@ -51,7 +52,7 @@ public class BoardTests extends BaseTest {
     void okHttpShouldCreateBoard() throws IOException  {
         OkHttpClient client = new OkHttpClient();
 
-        Call call = client.newCall(setupOkHttp("postOkHttp"));
+        Call call = client.newCall(BaseConfig.setupOkHttp("postOkHttp"));
         okhttp3.Response response = call.execute();
 
         String body = response.body().string();
@@ -62,7 +63,7 @@ public class BoardTests extends BaseTest {
 
     @Test
     void retrofitShouldCreateBoard() throws IOException {
-        retrofit2.Call<BoardInfo> client = setupRetrofit();
+        retrofit2.Call<BoardInfo> client = BaseConfig.setupRetrofit();
 
         ids.add(client.execute().body().getId());
     }
