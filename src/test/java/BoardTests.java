@@ -2,7 +2,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import models.BoardInfoRetrofit;
+import models.BoardInfo;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import org.apache.http.HttpEntity;
@@ -14,7 +14,6 @@ import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
-import retrofit2.Retrofit;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,10 +61,10 @@ public class BoardTests extends BaseTest {
     }
 
     @Test
-    void retrofitShouldCreateBoard() {
-        Retrofit retrofit = setupRetrofit();
+    void retrofitShouldCreateBoard() throws IOException {
+        retrofit2.Call<BoardInfo> client = setupRetrofit();
 
-        BoardInfoRetrofit response = retrofit.create(BoardInfoRetrofit.class);
+        ids.add(client.execute().body().getId());
     }
 
     @Test
