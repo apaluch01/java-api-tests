@@ -15,6 +15,7 @@ public class LabelNames{
     public String lime;
     public String pink;
     public String black;
+    public String sky;
     public String green_dark;
     public String yellow_dark;
     public String orange_dark;
