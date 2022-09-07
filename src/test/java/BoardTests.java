@@ -63,7 +63,7 @@ public class BoardTests extends BaseTest {
 
     @Test
     void retrofitShouldCreateBoard() {
-        Retrofit retrofit = setupRetrofit("postRetrofit");
+        Retrofit retrofit = setupRetrofit();
 
         BoardInfoRetrofit response = retrofit.create(BoardInfoRetrofit.class);
     }

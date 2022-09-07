@@ -4,7 +4,6 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import models.BoardInfo;
 import models.Root;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -76,9 +75,9 @@ public abstract class BaseTest {
         return request;
     }
 
-    Retrofit setupRetrofit(String name) {
+    Retrofit setupRetrofit() {
         Retrofit retrofit = new retrofit2.Retrofit.Builder()
-                        .baseUrl(baseUrl + "/1/boards/?name=" + name)
+                        .baseUrl(baseUrl)
                         .build();
 
         return retrofit;
