@@ -1,5 +1,7 @@
+import clients.BaseConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -25,72 +27,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.request;
 import static utility.TestConfigurationData.*;
 
 public abstract class BaseTest {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(BaseTest.class));
-    protected RequestSpecification requestSpec;
-    protected static String baseUrl;
-    protected String key;
-    protected String token;
-
+    private static final Logger LOGGER = Logger.getLogger(String.valueOf(BaseConfig.class));
+    public static RequestSpecification requestSpec;
+    BaseConfig config = new BaseConfig();
     @BeforeSuite
     void getConfigData() {
         try (FileReader file = new FileReader(CONFIG_DATA_FILE_PATH);
              BufferedReader reader = new BufferedReader(file)) {
-            baseUrl = reader.readLine();
-            key = reader.readLine();
-            token = reader.readLine();
+            config.setBaseUrl(reader.readLine());
+            config.setKey(reader.readLine());
+            config.setToken(reader.readLine());
         } catch (IOException e) {
             LOGGER.info((Supplier<String>) e);
         }
+
+        requestSpec = config.setupRequestSpecBuilder();
     }
-
-    @BeforeSuite
-    public void setupRequestSpecBuilder() {
-        RequestSpecBuilder builder = new RequestSpecBuilder();
-
-        builder.setBaseUri(baseUrl);
-        builder.addQueryParam("key", key);
-        builder.addQueryParam("token", token);
-
-        requestSpec = builder.build();
-    }
-
-    HttpPost setupHttpPost(String name) {
-        HttpPost post = new HttpPost(baseUrl + "/1/boards/?name=" + name + "&key=" + key + "&token=" + token);
-
-        return post;
-    }
-
-    Request setupOkHttp(String name) {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(baseUrl + "/1/boards/?name=" + name).newBuilder();
-        urlBuilder.addQueryParameter("key", key).
-                addQueryParameter("token", token);
-
-        String url = urlBuilder.build().toString();
-        RequestBody reqBody = RequestBody.create(null, new byte[0]);
-
-        Request request = new Request.Builder()
-                .url(url)
-                .method("POST", reqBody)
-                .build();
-
-        return request;
-    }
-
-    Call<BoardInfo> setupRetrofit() {
-        Retrofit retrofit = new retrofit2.Retrofit.Builder()
-                .baseUrl("https://api.trello.com")
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build();
-
-        RetrofitAPI service = retrofit.create(RetrofitAPI.class);
-
-        retrofit2.Call<BoardInfo> response = service.createBoard(key, token);
-        return response;
-    }
-
     String getId(String body) {
 
         Pattern pattern = Pattern.compile("(\"id\":\")([0-9a-z]+)");
