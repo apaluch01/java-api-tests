@@ -4,13 +4,17 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import models.BoardInfo;
+import models.RetrofitAPI;
 import models.Root;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import org.apache.http.client.methods.HttpPost;
 import org.testng.annotations.BeforeSuite;
+import retrofit2.Call;
 import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -75,12 +79,16 @@ public abstract class BaseTest {
         return request;
     }
 
-    Retrofit setupRetrofit() {
+    Call<BoardInfo> setupRetrofit() {
         Retrofit retrofit = new retrofit2.Retrofit.Builder()
-                        .baseUrl(baseUrl)
-                        .build();
+                .baseUrl("https://api.trello.com")
+                .addConverterFactory(JacksonConverterFactory.create())
+                .build();
 
-        return retrofit;
+        RetrofitAPI service = retrofit.create(RetrofitAPI.class);
+
+        retrofit2.Call<BoardInfo> response = service.createBoard(key, token);
+        return response;
     }
 
     String getId(String body) {
