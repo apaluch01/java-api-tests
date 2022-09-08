@@ -72,7 +72,7 @@ public abstract class BaseTest {
         return (matcher.matches());
     }
 
-    void deleteBoard(String id) {
+    static void deleteBoard(String id) {
         given().spec(requestSpec).when().delete("/1/boards/" + id);
     }
 }

@@ -31,7 +31,7 @@ public class BoardTests extends BaseTest {
 
     @AfterSuite
     void cleanUp(){
-        ids.forEach(id -> deleteBoard(id));
+        ids.forEach(BaseTest::deleteBoard);
         ids.clear();
     }
 
