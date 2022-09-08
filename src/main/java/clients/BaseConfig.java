@@ -33,12 +33,6 @@ public class BaseConfig {
         return requestSpecification;
     }
 
-    public static HttpPost setupHttpPost(String name) {
-        HttpPost post = new HttpPost(baseUrl + "/1/boards/?name=" + name + "&key=" + key + "&token=" + token);
-
-        return post;
-    }
-
     public static Request setupOkHttp(String name) {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(baseUrl + "/1/boards/?name=" + name).newBuilder();
         urlBuilder.addQueryParameter("key", key).

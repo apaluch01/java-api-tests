@@ -1,3 +1,4 @@
+import clients.ApacheClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -25,7 +26,6 @@ import clients.BaseConfig;
 
 public class BoardTests extends BaseTest {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(BoardTests.class));
-
     public static final List<String> ids = new ArrayList();
     StringBuilder id = new StringBuilder();
 
@@ -38,7 +38,7 @@ public class BoardTests extends BaseTest {
     @Test
     void apacheShouldCreateBoard() throws IOException {
         HttpClient client = HttpClientBuilder.create().build();
-        HttpResponse response = client.execute(BaseConfig.setupHttpPost("postApache"));
+        HttpResponse response = client.execute(ApacheClient.setupHttpPost("postApache"));
 
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity);
