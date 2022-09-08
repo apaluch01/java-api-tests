@@ -1,4 +1,5 @@
 import clients.ApacheClient;
+import clients.RetrofitClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -22,7 +23,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
-import clients.BaseConfig;
 
 public class BoardTests extends BaseTest {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(BoardTests.class));
@@ -63,7 +63,7 @@ public class BoardTests extends BaseTest {
 
     @Test
     void retrofitShouldCreateBoard() throws IOException {
-        retrofit2.Call<BoardInfo> client = BaseConfig.setupRetrofit();
+        retrofit2.Call<BoardInfo> client = RetrofitClient.setupRetrofit();
 
         ids.add(client.execute().body().getId());
     }
