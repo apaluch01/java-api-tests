@@ -33,22 +33,6 @@ public class BaseConfig {
         return requestSpecification;
     }
 
-    public static Request setupOkHttp(String name) {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(baseUrl + "/1/boards/?name=" + name).newBuilder();
-        urlBuilder.addQueryParameter("key", key).
-                addQueryParameter("token", token);
-
-        String url = urlBuilder.build().toString();
-        RequestBody reqBody = RequestBody.create(null, new byte[0]);
-
-        Request request = new Request.Builder()
-                .url(url)
-                .method("POST", reqBody)
-                .build();
-
-        return request;
-    }
-
     public static Call<BoardInfo> setupRetrofit() {
         Retrofit retrofit = new retrofit2.Retrofit.Builder()
                 .baseUrl("https://api.trello.com")

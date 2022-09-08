@@ -52,7 +52,7 @@ public class BoardTests extends BaseTest {
     void okHttpShouldCreateBoard() throws IOException  {
         OkHttpClient client = new OkHttpClient();
 
-        Call call = client.newCall(BaseConfig.setupOkHttp("postOkHttp"));
+        Call call = client.newCall(clients.OkHttpClient.setupOkHttp("postOkHttp"));
         okhttp3.Response response = call.execute();
 
         String body = response.body().string();
