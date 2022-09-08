@@ -1,22 +1,11 @@
 import clients.BaseConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.Serializers;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import models.BoardInfo;
-import models.RetrofitAPI;
 import models.Root;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import org.apache.http.client.methods.HttpPost;
 import org.testng.annotations.BeforeSuite;
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -27,7 +16,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.request;
 import static utility.TestConfigurationData.*;
 
 public abstract class BaseTest {
