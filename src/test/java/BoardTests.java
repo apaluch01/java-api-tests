@@ -1,12 +1,15 @@
 import clients.ApacheClient;
 import clients.RetrofitClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import models.BoardInfo;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -52,13 +55,17 @@ public class BoardTests extends BaseTest {
     void okHttpShouldCreateBoard() throws IOException  {
         OkHttpClient client = new OkHttpClient();
 
-        Call call = client.newCall(clients.OkHttpClient.setupOkHttp("postOkHttp"));
+        Request request = clients.OkHttpClient.setupOkHttp("postOkHttp");
+        Call call = client.newCall(request);
         okhttp3.Response response = call.execute();
 
-        String body = response.body().string();
+        ObjectMapper objectMapper = new ObjectMapper();
+        ResponseBody responseBody = client.newCall(clients.OkHttpClient.setupOkHttp("postOkHttp")).execute().body();
+        BoardInfo entity = objectMapper.readValue(responseBody.string(), BoardInfo.class);
+
         Assert.assertEquals(response.code(), 200);
-        Assert.assertEquals(getName(body), "postOkHttp");
-        ids.add(getId(body));
+        Assert.assertEquals(entity.getName(), "postOkHttp");
+        ids.add(entity.getId());
     }
 
     @Test
