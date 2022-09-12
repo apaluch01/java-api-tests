@@ -1,6 +1,5 @@
 package clients;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import models.BoardInfo;
 import models.RetrofitAPI;
 import retrofit2.Call;
