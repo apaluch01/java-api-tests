@@ -36,22 +36,6 @@ public abstract class BaseTest {
 
         requestSpec = config.setupRequestSpecBuilder();
     }
-    String getId(String body) {
-
-        Pattern pattern = Pattern.compile("(\"id\":\")([0-9a-z]+)");
-        Matcher matcher = pattern.matcher(body);
-
-        matcher.find();
-        return (matcher.group(2));
-    }
-
-    String getName(String body) {
-        Pattern pattern = Pattern.compile("(\"name\":\")([^\"]+)");
-        Matcher matcher = pattern.matcher(body);
-
-        matcher.find();
-        return (matcher.group(2));
-    }
 
     public BoardInfo createAndReturnBoard(String name) {
         RequestSpecification requestSpecification = given().spec(requestSpec);
