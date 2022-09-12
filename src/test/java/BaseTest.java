@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import models.BoardInfo;
 import models.Root;
 import org.testng.annotations.BeforeSuite;
 
@@ -52,22 +53,19 @@ public abstract class BaseTest {
         return (matcher.group(2));
     }
 
-    public String createBoardAndReturnId(String name) {
+    public BoardInfo createAndReturnBoard(String name) {
         RequestSpecification requestSpecification = given().spec(requestSpec);
 
         Response response = requestSpecification.queryParam("name", name).
                 contentType(ContentType.JSON).
                 when().post("/1/boards/");
 
-        return(response.then().extract().path("id"));
+        return(response.getBody().as(BoardInfo.class));
     }
 
-    boolean checkIfShortUrlMatches(String body) throws JsonProcessingException {
-        ObjectMapper om = new ObjectMapper();
-        Root root = om.readValue(body, Root.class);
-
+    boolean checkIfShortUrlMatches(String shortUrl) {
         Pattern pattern = Pattern.compile("(https://trello\\.com/b/)(\\w{8})");
-        Matcher matcher = pattern.matcher(root.getShortUrl());
+        Matcher matcher = pattern.matcher(shortUrl);
 
         return (matcher.matches());
     }

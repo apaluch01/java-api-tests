@@ -10,12 +10,10 @@ import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
@@ -85,47 +83,48 @@ public class BoardTests extends BaseTest {
                 contentType(ContentType.JSON).
                 when().post("/1/boards/");
 
-        ids.add(response.then().extract().path("id"));
+        BoardInfo board = response.getBody().as(BoardInfo.class);
 
         Assert.assertEquals(response.getStatusCode(), 200);
-        Assert.assertEquals(response.then().extract().path("name"), "post");
+        Assert.assertEquals(board.getName(), "post");
+        ids.add(board.getId());
     }
 
     @Test
     void shouldGetBoardById() throws JsonProcessingException {
-        id = new StringBuilder(createBoardAndReturnId("get"));
-        ids.add(id.toString());
-
+        BoardInfo board = createAndReturnBoard("get");
         RequestSpecification requestSpecification = given().spec(requestSpec);
-        Response response = requestSpecification.when().get("/1/boards/" + id);
+
+        Response response = requestSpecification.when().get("/1/boards/" + board.getId());
 
         Assert.assertEquals(response.getStatusCode(), 200);
-        Assert.assertEquals(response.then().extract().path("name"), "get");
-        Assert.assertTrue(checkIfShortUrlMatches(response.then().extract().response().asString()));
+        Assert.assertEquals(board.getName(), "get");
+        Assert.assertTrue(checkIfShortUrlMatches(board.getShortUrl()));
+        ids.add(board.getId());
     }
 
     @Test
-    void shouldUpdateBoardById() throws JsonProcessingException {
-        id = new StringBuilder(createBoardAndReturnId("put"));
-        ids.add(id.toString());
-
+    void shouldUpdateBoardById() {
+        BoardInfo board = createAndReturnBoard("put");
         RequestSpecification requestSpecification = given().spec(requestSpec);
-        Response response = requestSpecification.when().put("/1/boards/" + id);
 
-        LOGGER.info(response.then().extract().response().asString());
+        Response response = requestSpecification.when().put("/1/boards/" + board.getId());
+
         Assert.assertEquals(response.getStatusCode(), 200);
-        Assert.assertEquals(response.then().extract().path("name"), "put");
-        Assert.assertTrue(checkIfShortUrlMatches(response.then().extract().response().asString()));
+        Assert.assertEquals(board.getName(), "put");
+        Assert.assertTrue(checkIfShortUrlMatches(board.getShortUrl()));
+        ids.add(board.getId());
     }
 
     @Test
     void shouldDeleteBoardById() {
-        id = new StringBuilder(createBoardAndReturnId("delete"));
-
+        BoardInfo board = createAndReturnBoard("delete");
         RequestSpecification requestSpecification = given().spec(requestSpec);
-        Response response = requestSpecification.when().delete("/1/boards/" + id);
+
+        Response response = requestSpecification.when().delete("/1/boards/" + board.getId());
 
         Assert.assertEquals(response.getStatusCode(), 200);
-        Assert.assertEquals(requestSpecification.when().get("/1/boards/" + id).getStatusCode(), 404);
+        Assert.assertEquals(requestSpecification.when().get("/1/boards/" + board.getId()).getStatusCode(),
+                404);
     }
 }
