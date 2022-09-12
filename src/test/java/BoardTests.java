@@ -42,7 +42,7 @@ public class BoardTests extends BaseTest {
     void apacheShouldCreateBoard() throws IOException {
         HttpClient client = HttpClientBuilder.create().build();
         HttpResponse response = client.execute(ApacheClient.setupHttpPost("postApache"));
-        
+
         ObjectMapper objectMapper = new ObjectMapper();
         BoardInfo board = objectMapper.readValue(response.getEntity().getContent(), BoardInfo.class);
 
@@ -54,11 +54,10 @@ public class BoardTests extends BaseTest {
     @Test
     void okHttpShouldCreateBoard() throws IOException  {
         OkHttpClient client = new OkHttpClient();
-
         Request request = clients.OkHttpClient.setupOkHttp("postOkHttp");
         Call call = client.newCall(request);
-        okhttp3.Response response = call.execute();
 
+        okhttp3.Response response = call.execute();
         ObjectMapper objectMapper = new ObjectMapper();
         ResponseBody responseBody = client.newCall(clients.OkHttpClient.setupOkHttp("postOkHttp")).execute().body();
         BoardInfo board = objectMapper.readValue(responseBody.string(), BoardInfo.class);
@@ -72,7 +71,10 @@ public class BoardTests extends BaseTest {
     void retrofitShouldCreateBoard() throws IOException {
         retrofit2.Call<BoardInfo> client = RetrofitClient.setupRetrofit();
 
-        ids.add(client.execute().body().getId());
+        BoardInfo board = client.execute().body();
+
+        Assert.assertEquals(board.getName(), "postRetrofit");
+        ids.add(board.getId());
     }
 
     @Test

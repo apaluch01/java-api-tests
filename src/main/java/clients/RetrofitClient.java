@@ -9,7 +9,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class RetrofitClient extends BaseConfig {
     public static Call<BoardInfo> setupRetrofit() {
         Retrofit retrofit = new retrofit2.Retrofit.Builder()
-                .baseUrl("https://api.trello.com")
+                .baseUrl(baseUrl)
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
 
