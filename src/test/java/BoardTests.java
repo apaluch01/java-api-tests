@@ -42,13 +42,13 @@ public class BoardTests extends BaseTest {
     void apacheShouldCreateBoard() throws IOException {
         HttpClient client = HttpClientBuilder.create().build();
         HttpResponse response = client.execute(ApacheClient.setupHttpPost("postApache"));
-
-        HttpEntity entity = response.getEntity();
-        String body = EntityUtils.toString(entity);
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        BoardInfo board = objectMapper.readValue(response.getEntity().getContent(), BoardInfo.class);
 
         Assert.assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
-        Assert.assertEquals(getName(body), "postApache");
-        ids.add(getId(body));
+        Assert.assertEquals(board.getName(), "postApache");
+        ids.add(board.getId());
     }
 
     @Test
@@ -61,11 +61,11 @@ public class BoardTests extends BaseTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         ResponseBody responseBody = client.newCall(clients.OkHttpClient.setupOkHttp("postOkHttp")).execute().body();
-        BoardInfo entity = objectMapper.readValue(responseBody.string(), BoardInfo.class);
+        BoardInfo board = objectMapper.readValue(responseBody.string(), BoardInfo.class);
 
         Assert.assertEquals(response.code(), 200);
-        Assert.assertEquals(entity.getName(), "postOkHttp");
-        ids.add(entity.getId());
+        Assert.assertEquals(board.getName(), "postOkHttp");
+        ids.add(board.getId());
     }
 
     @Test
