@@ -28,7 +28,6 @@ import static io.restassured.RestAssured.given;
 public class BoardTests extends BaseTest {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(BoardTests.class));
     public static final List<String> ids = new ArrayList();
-    StringBuilder id = new StringBuilder();
 
     @AfterSuite
     void cleanUp(){
@@ -50,15 +49,14 @@ public class BoardTests extends BaseTest {
     }
 
     @Test
-    void okHttpShouldCreateBoard() throws IOException  {
+    void okHttpShouldCreateBoard() throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = clients.OkHttpClient.setupOkHttp("postOkHttp");
         Call call = client.newCall(request);
 
         okhttp3.Response response = call.execute();
         ObjectMapper objectMapper = new ObjectMapper();
-        ResponseBody responseBody = client.newCall(clients.OkHttpClient.setupOkHttp("postOkHttp")).execute().body();
-        BoardInfo board = objectMapper.readValue(responseBody.string(), BoardInfo.class);
+        BoardInfo board = objectMapper.readValue(response.body().string(), BoardInfo.class);
 
         Assert.assertEquals(response.code(), 200);
         Assert.assertEquals(board.getName(), "postOkHttp");
