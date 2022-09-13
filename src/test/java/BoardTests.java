@@ -6,9 +6,6 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import models.BoardInfo;
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -21,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static clients.OkHttpClient.createBoard;
 import static io.restassured.RestAssured.given;
 
 public class BoardTests extends BaseTest {
@@ -47,11 +45,7 @@ public class BoardTests extends BaseTest {
 
     @Test
     void okHttpShouldCreateBoard() throws IOException {
-        OkHttpClient client = new OkHttpClient();
-        Request request = clients.OkHttpClient.setupOkHttp("postOkHttp");
-        Call call = client.newCall(request);
-
-        okhttp3.Response response = call.execute();
+        okhttp3.Response response = createBoard("postOkHttp");
         ObjectMapper objectMapper = new ObjectMapper();
         BoardInfo board = objectMapper.readValue(response.body().string(), BoardInfo.class);
 
