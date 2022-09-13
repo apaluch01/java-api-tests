@@ -13,11 +13,9 @@ public class OkHttpClient extends BaseConfig{
         String url = urlBuilder.build().toString();
         RequestBody reqBody = RequestBody.create(null, new byte[0]);
 
-        Request request = new Request.Builder()
+        return new Request.Builder()
                 .url(url)
                 .method("POST", reqBody)
                 .build();
-
-        return request;
     }
 }

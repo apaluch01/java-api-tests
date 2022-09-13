@@ -1,11 +1,8 @@
 import clients.BaseConfig;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import models.BoardInfo;
-import models.Root;
 import org.testng.annotations.BeforeSuite;
 
 import java.io.BufferedReader;
@@ -27,9 +24,9 @@ public abstract class BaseTest {
     void getConfigData() {
         try (FileReader file = new FileReader(CONFIG_DATA_FILE_PATH);
              BufferedReader reader = new BufferedReader(file)) {
-            config.setBaseUrl(reader.readLine());
-            config.setKey(reader.readLine());
-            config.setToken(reader.readLine());
+            BaseConfig.setBaseUrl(reader.readLine());
+            BaseConfig.setKey(reader.readLine());
+            BaseConfig.setToken(reader.readLine());
         } catch (IOException e) {
             LOGGER.info((Supplier<String>) e);
         }

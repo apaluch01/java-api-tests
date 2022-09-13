@@ -9,7 +9,6 @@ import models.BoardInfo;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.ResponseBody;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -21,13 +20,11 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
 
 public class BoardTests extends BaseTest {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(BoardTests.class));
-    public static final List<String> ids = new ArrayList();
+    public static final List<String> ids = new ArrayList<>();
 
     @AfterSuite
     void cleanUp(){
