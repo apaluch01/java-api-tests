@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static clients.OkHttpClient.createBoard;
+import static clients.OkHttpClient.getModel;
 import static io.restassured.RestAssured.given;
 
 public class BoardTests extends BaseTest {
@@ -35,8 +36,7 @@ public class BoardTests extends BaseTest {
         HttpClient client = HttpClientBuilder.create().build();
         HttpResponse response = client.execute(ApacheClient.setupHttpPost("postApache"));
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        BoardInfo board = objectMapper.readValue(response.getEntity().getContent(), BoardInfo.class);
+        BoardInfo board = ApacheClient.getModel(response);
 
         Assert.assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
         Assert.assertEquals(board.getName(), "postApache");
@@ -46,8 +46,7 @@ public class BoardTests extends BaseTest {
     @Test
     void okHttpShouldCreateBoard() throws IOException {
         okhttp3.Response response = createBoard("postOkHttp");
-        ObjectMapper objectMapper = new ObjectMapper();
-        BoardInfo board = objectMapper.readValue(response.body().string(), BoardInfo.class);
+        BoardInfo board = getModel(response);
 
         Assert.assertEquals(response.code(), 200);
         Assert.assertEquals(board.getName(), "postOkHttp");

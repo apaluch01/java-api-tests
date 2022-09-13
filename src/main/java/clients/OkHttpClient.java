@@ -1,5 +1,6 @@
 package clients;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import models.BoardInfo;
 import okhttp3.*;
 
@@ -26,5 +27,10 @@ public class OkHttpClient extends BaseConfig{
         Call call = client.newCall(request);
 
         return call.execute();
+    }
+
+    public static BoardInfo getModel(Response response) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(response.body().string(), BoardInfo.class);
     }
 }
