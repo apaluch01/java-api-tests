@@ -1,7 +1,6 @@
 import clients.ApacheClient;
 import clients.RetrofitClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -23,12 +22,12 @@ import static clients.OkHttpClient.getModel;
 import static io.restassured.RestAssured.given;
 
 public class BoardTests extends BaseTest {
-    public static final List<String> ids = new ArrayList<>();
+    private static final List<String> IDS = new ArrayList<>();
 
     @AfterSuite
     void cleanUp(){
-        ids.forEach(BaseTest::deleteBoard);
-        ids.clear();
+        IDS.forEach(BaseTest::deleteBoard);
+        IDS.clear();
     }
 
     @Test
@@ -40,7 +39,7 @@ public class BoardTests extends BaseTest {
 
         Assert.assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
         Assert.assertEquals(board.getName(), "postApache");
-        ids.add(board.getId());
+        IDS.add(board.getId());
     }
 
     @Test
@@ -50,7 +49,7 @@ public class BoardTests extends BaseTest {
 
         Assert.assertEquals(response.code(), 200);
         Assert.assertEquals(board.getName(), "postOkHttp");
-        ids.add(board.getId());
+        IDS.add(board.getId());
     }
 
     @Test
@@ -60,7 +59,7 @@ public class BoardTests extends BaseTest {
         BoardInfo board = client.execute().body();
 
         Assert.assertEquals(board.getName(), "postRetrofit");
-        ids.add(board.getId());
+        IDS.add(board.getId());
     }
 
     @Test
@@ -75,7 +74,7 @@ public class BoardTests extends BaseTest {
 
         Assert.assertEquals(response.getStatusCode(), 200);
         Assert.assertEquals(board.getName(), "post");
-        ids.add(board.getId());
+        IDS.add(board.getId());
     }
 
     @Test
@@ -88,7 +87,7 @@ public class BoardTests extends BaseTest {
         Assert.assertEquals(response.getStatusCode(), 200);
         Assert.assertEquals(board.getName(), "get");
         Assert.assertTrue(checkIfShortUrlMatches(board.getShortUrl()));
-        ids.add(board.getId());
+        IDS.add(board.getId());
     }
 
     @Test
@@ -101,7 +100,7 @@ public class BoardTests extends BaseTest {
         Assert.assertEquals(response.getStatusCode(), 200);
         Assert.assertEquals(board.getName(), "put");
         Assert.assertTrue(checkIfShortUrlMatches(board.getShortUrl()));
-        ids.add(board.getId());
+        IDS.add(board.getId());
     }
 
     @Test
