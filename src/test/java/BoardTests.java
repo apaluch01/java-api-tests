@@ -1,4 +1,5 @@
 import clients.ApacheClient;
+import clients.OkHttpClient;
 import clients.RetrofitClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.http.ContentType;
@@ -17,8 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static clients.OkHttpClient.createBoard;
-import static clients.OkHttpClient.getModel;
 import static io.restassured.RestAssured.given;
 
 public class BoardTests extends BaseTest {
@@ -32,10 +31,11 @@ public class BoardTests extends BaseTest {
 
     @Test
     void apacheShouldCreateBoard() throws IOException {
+        ApacheClient apacheClient = new ApacheClient();
         HttpClient client = HttpClientBuilder.create().build();
-        HttpResponse response = client.execute(ApacheClient.setupHttpPost("postApache"));
+        HttpResponse response = client.execute(apacheClient.setupHttpPost("postApache"));
 
-        BoardInfo board = ApacheClient.getModel(response);
+        BoardInfo board = apacheClient.getModel(response);
 
         Assert.assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
         Assert.assertEquals(board.getName(), "postApache");
@@ -44,8 +44,10 @@ public class BoardTests extends BaseTest {
 
     @Test
     void okHttpShouldCreateBoard() throws IOException {
-        okhttp3.Response response = createBoard("postOkHttp");
-        BoardInfo board = getModel(response);
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okhttp3.Response response = okHttpClient.createBoard("postOkHttp");
+
+        BoardInfo board = okHttpClient.getModel(response);
 
         Assert.assertEquals(response.code(), 200);
         Assert.assertEquals(board.getName(), "postOkHttp");
@@ -54,7 +56,8 @@ public class BoardTests extends BaseTest {
 
     @Test
     void retrofitShouldCreateBoard() throws IOException {
-        retrofit2.Call<BoardInfo> client = RetrofitClient.setupRetrofit();
+        RetrofitClient retrofitClient = new RetrofitClient();
+        retrofit2.Call<BoardInfo> client = retrofitClient.setupRetrofit();
 
         BoardInfo board = client.execute().body();
 

@@ -7,7 +7,7 @@ import okhttp3.*;
 import java.io.IOException;
 
 public class OkHttpClient extends BaseConfig{
-    public static String setupOkHttp(String name) {
+    public String setupOkHttp(String name) {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(baseUrl + "/1/boards/?name=" + name).newBuilder();
         urlBuilder.addQueryParameter("key", key).
                 addQueryParameter("token", token);
@@ -15,7 +15,7 @@ public class OkHttpClient extends BaseConfig{
         return urlBuilder.build().toString();
     }
 
-    public static Response createBoard(String name) throws IOException {
+    public Response createBoard(String name) throws IOException {
         okhttp3.OkHttpClient client = new okhttp3.OkHttpClient();
         RequestBody reqBody = RequestBody.create(null, new byte[0]);
 
@@ -29,7 +29,7 @@ public class OkHttpClient extends BaseConfig{
         return call.execute();
     }
 
-    public static BoardInfo getModel(Response response) throws IOException {
+    public BoardInfo getModel(Response response) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(response.body().string(), BoardInfo.class);
     }
