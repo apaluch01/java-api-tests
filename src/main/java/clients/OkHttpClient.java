@@ -7,6 +7,8 @@ import okhttp3.*;
 import java.io.IOException;
 
 public class OkHttpClient extends BaseConfig{
+    ObjectMapper objectMapper = new ObjectMapper();
+
     public String setupOkHttp(String name) {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(baseUrl + "/1/boards/?name=" + name).newBuilder();
         urlBuilder.addQueryParameter("key", key).
@@ -30,7 +32,6 @@ public class OkHttpClient extends BaseConfig{
     }
 
     public BoardInfo getModel(Response response) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(response.body().string(), BoardInfo.class);
     }
 }
