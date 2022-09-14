@@ -15,7 +15,6 @@ public class RetrofitClient extends BaseConfig {
 
         RetrofitAPI service = retrofit.create(RetrofitAPI.class);
 
-        retrofit2.Call<BoardInfo> response = service.createBoard(key, token);
-        return response;
+        return service.createBoard(key, token);
     }
 }
