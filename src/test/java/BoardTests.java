@@ -30,7 +30,7 @@ public class BoardTests extends BaseTest {
     @Test
     void apacheShouldCreateBoard() throws IOException {
         ApacheClient apacheClient = new ApacheClient();
-        HttpResponse response = apacheClient.setupHttpPost("postApache");
+        HttpResponse response = apacheClient.setupHttpPost();
 
         BoardInfo board = apacheClient.getModel(response);
 
