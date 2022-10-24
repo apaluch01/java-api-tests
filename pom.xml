@@ -26,6 +26,11 @@
 
 <dependencies>
     <dependency>
+        <groupId>net.masterthought</groupId>
+        <artifactId>cucumber-reporting</artifactId>
+        <version>5.7.3</version>
+    </dependency>
+    <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>${logback.version}</version>
