@@ -1,13 +1,14 @@
 import clients.ApacheClient;
 import clients.OkHttpClient;
 import clients.RetrofitClient;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import models.BoardInfo;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.junit.runner.RunWith;
+import io.cucumber.junit.Cucumber;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-
+@RunWith(Cucumber.class)
 public class BoardTests extends BaseTest {
     private static final List<String> IDS = new ArrayList<>();
 
@@ -58,6 +59,7 @@ public class BoardTests extends BaseTest {
 
         BoardInfo board = client.execute().body();
 
+        assert board != null;
         Assert.assertEquals(board.getName(), "postRetrofit");
         IDS.add(board.getId());
     }
@@ -78,7 +80,7 @@ public class BoardTests extends BaseTest {
     }
 
     @Test
-    void shouldGetBoardById() throws JsonProcessingException {
+    void shouldGetBoardById() {
         BoardInfo board = createAndReturnBoard("get");
         RequestSpecification requestSpecification = given().spec(requestSpec);
 
