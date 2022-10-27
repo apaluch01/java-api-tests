@@ -36,4 +36,4 @@ out/
 *.iws
 
 ## Project data
-/src/config.txt
+target/
